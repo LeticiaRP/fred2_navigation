@@ -1,7 +1,10 @@
-import launch
-from launch.substitutions import Command, LaunchConfiguration
-import launch_ros
 import os
+import launch
+import launch_ros
+
+from launch import LaunchDescription
+from launch.substitutions import Command, LaunchConfiguration
+from launch.actions import TimerAction, LogInfo
 
 def generate_launch_description():
     pkg_share = launch_ros.substitutions.FindPackageShare(package='fred2_navigation').find('fred2_navigation')
@@ -16,7 +19,11 @@ def generate_launch_description():
        parameters=[os.path.join(pkg_share, 'config/ekf_odom.yaml')]
 )
 
-    return launch.LaunchDescription([
+    return LaunchDescription([
 
-        robot_localization_node,
+        TimerAction(period= 3.0, actions= [
+            
+            LogInfo(msg=' ######################### LAUNCHING ROBOT LOCALIZATION #################################### '), 
+            robot_localization_node
+        ])
     ])
