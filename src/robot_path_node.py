@@ -69,21 +69,19 @@ class RobotPathNode(Node):
 
 
     def odometry_callback(self, msg):
-        
-
         pose_stamped = PoseStamped()
         pose_stamped.pose = msg.pose.pose
 
         pose_stamped.header.stamp = self.get_clock().now().to_msg()
-        pose_stamped.header.seq = self.seq
-        self.seq += 1
+        # pose_stamped.header.seq = self.seq
+        # self.seq += 1
 
         self.path.poses.append(pose_stamped)
 
         # Publish the 'path' message
         self.path.header.stamp = self.get_clock().now().to_msg()
         self.path.header.frame_id = "odom"
-    
+
         self.path_publisher.publish(self.path)
 
 

@@ -11,19 +11,18 @@ def generate_launch_description():
     # default_rviz_config_path = os.path.join(pkg_share, 'rviz/urdf_config.rviz')
 
 
-    robot_localization_node = launch_ros.actions.Node(
-       package='robot_localization',
-       executable='ekf_node',
-       name='ekf_filter_node',
+    robot_path = launch_ros.actions.Node(
+       package='fred2_navigation',
+       executable='robot_path_node.py',
+       name='robot_path_monitor',
        output='screen',
-       parameters=[os.path.join(pkg_share, 'config/ekf_odom.yaml')]
 )
 
     return LaunchDescription([
 
         TimerAction(period= 3.0, actions= [
             
-            LogInfo(msg=' ######################### LAUNCHING ROBOT LOCALIZATION #################################### '), 
-            robot_localization_node
+            LogInfo(msg=' ######################### LAUNCHING PATH MONITOR #################################### '), 
+            robot_path
         ])
     ])
