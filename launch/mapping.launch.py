@@ -29,6 +29,7 @@ def generate_launch_description():
             {'stack_size_to_use': 40000000}, # value in bytes -> 40MB
             {'minimum_travel_distance': 0.10}, 
             {'minimum_travel_heading': 0.17},  # 10°  
+            {'use_sim_time': False},
               # Add your SLAM parameters here
         ],
     )
