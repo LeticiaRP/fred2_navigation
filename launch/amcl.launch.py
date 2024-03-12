@@ -1,6 +1,10 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
+from launch.actions import IncludeLaunchDescription, TimerAction, LogInfo
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+
+
 import os
 
 def generate_launch_description():
@@ -9,9 +13,15 @@ def generate_launch_description():
     config_dir = os.path.join(pkg_dir, 'config')
     map_dir = os.path.join(pkg_dir, 'maps')
     amcl_config = os.path.join(config_dir, 'amcl.yaml')
-    map_file = os.path.join(map_dir, 'meiu-5cm.yaml')
+    map_file = os.path.join(map_dir, 'iron-day2.yaml')
+
+    rplidar = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(get_package_share_directory('rplidar_ros'), 'launch'), 
+                                       '/rplidar.launch.py'])
+    )
 
     return LaunchDescription([
+        TimerAction(period= 5.0, actions= [rplidar]),
         # Map Server Node
         Node(
             package='nav2_map_server',
@@ -43,5 +53,9 @@ def generate_launch_description():
                 {'node_names': ['map_server', 'amcl']}
                 # Add other node names as needed
             ],
-        ),
+        )
+        # TimerAction(period= 5.0, actions= [rplidar]),
+
+
+        
     ])
