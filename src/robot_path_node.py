@@ -8,8 +8,8 @@ from typing import List, Optional
 from rclpy.node import Node
 from rclpy.context import Context 
 from rclpy.parameter import Parameter
-
 from rclpy.qos import QoSPresetProfiles, QoSProfile, QoSHistoryPolicy, QoSLivelinessPolicy, QoSReliabilityPolicy, QoSDurabilityPolicy
+from rclpy.signals import SignalHandlerOptions
 
 from nav_msgs.msg import Odometry, Path
 from geometry_msgs.msg import PoseStamped
@@ -89,7 +89,7 @@ class RobotPathNode(Node):
 
 if __name__ == '__main__': 
         
-    rclpy.init()
+    rclpy.init(args= None, signal_handler_options= SignalHandlerOptions.NO)
 
     node = RobotPathNode(
         node_name='robot_path_monitor',
@@ -97,12 +97,11 @@ if __name__ == '__main__':
         namespace='navigation',
         enable_rosout=False)
 
-
     try: 
-        while rclpy.ok(): 
-            rclpy.spin(node)
+        rclpy.spin(node)
 
     except KeyboardInterrupt:
         pass
 
+    RobotPathNode.destroy_node()
     rclpy.shutdown()
